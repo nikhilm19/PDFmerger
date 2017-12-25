@@ -11,7 +11,7 @@ footer.grid(row=2)
 ff.grid(row=1)
 f.grid(row=0,sticky="ew")
 def onclickSource():
-    webbrowser.open("https://github.com/nikmul19/Python/blob/master/GUI_TEST/gui_test.py")
+    webbrowser.open("https://github.com/nikmul19/Python/blob/master/GUI_TEST/frame_test.py")
     
 source=Button(f,text="View Source code",command=onclickSource,highlightbackground="grey")
 source.grid(row=0,column=0)
