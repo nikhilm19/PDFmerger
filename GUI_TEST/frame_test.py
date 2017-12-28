@@ -1,15 +1,17 @@
 from tkinter import *
 import webbrowser
+import string
+
 t=Tk()
 t.title("Frame By Frame GUI")
 t.geometry("460x350")
 t.grid_columnconfigure(0,weight=1)
 t.grid_rowconfigure(1,weight=1)
+
 #main frames
 f=Frame(t,bg="light blue",width=460,height=35,pady=5,padx=45)
 ff=Frame(t,bg="light gray",width=460,height=280,highlightcolor="black",padx=50,pady=10,highlightbackground="black")
 footer=Frame(t,bg="gray93",width=460,height=35,pady=6,padx=42)
-
 f.grid(row=0,sticky="ew")
 f.grid_rowconfigure(0,weight=2)
 f.grid_columnconfigure(0,weight=1)
@@ -31,13 +33,12 @@ Or.grid(row=0,column=2,sticky="ew")
 sign_in.grid(row=0,column=3,ipadx=20)
 
 
-heading=Label(ff,text="YouBuild",font="calibri 26 bold  underline",pady=10,height=1,bg="light grey")
-heading.pack()
 #box object
 box=LabelFrame(ff,height=250,width=200,bg="white",bd=5,relief="flat")
 box.pack()
 box.config(highlightbackground="green")
-print(box.winfo_width)
+
+
 #inside the box
 
 #userframe
@@ -48,13 +49,14 @@ user.grid(row=0,sticky="nsew")
 passFrame=Frame(box,height=70,width=199,bg="white")
 passFrame.grid(row=1,sticky="nsew")
 
+heading=Label(ff,text="YouBuild",font="calibri 26 bold  underline",pady=10,height=1,bg="light grey")
+heading.pack()
 
-#login-button
-signbutton=Button(box,text="Login",fg="white",highlightbackground="springgreen2")
-signbutton.grid(row=2,column=0,columnspan=2,sticky="ew")
+
 
 def create_user():
     """ creates username label and an entry field to enter username"""
+    global username,userid
     username=Label(user,text="Username",fg="black",bg="white")
     username.grid(row=0,column=0,sticky="w")
     #entry field
@@ -65,6 +67,7 @@ def create_user():
 
 def create_password():
     """creates password label and an entry field to get the password"""
+    global password,forget
     password=Label(passFrame,text="Password")
     password.grid(row=0,column=0,sticky="w")
     password_entry=Entry(passFrame,width=21,show="*")
@@ -72,12 +75,20 @@ def create_password():
     forget=Button(passFrame,text="Forgot password?",width=12,font="calibri 10 underline",)
     forget.grid(row=2,sticky="e")
 
-
 create_user()
 create_password()
 
+def check_details():
+    global userid
+    uname=userid.get().strip(string.whitespace)
+    print(uname)
+
+#login-button
+signbutton=Button(box,text="Login",fg="white",command=check_details,highlightbackground="springgreen2")
+signbutton.grid(row=2,column=0,columnspan=2,sticky="ew")
+
 #footer part
-develop=Label(footer,text="Developer: Nikhil Mulchandani",fg="blue",bg="gray93",width=40)
+develop=Label(footer,text="Made with ❤️ for you",fg="blue",bg="gray93")
 develop.pack()
 
 
