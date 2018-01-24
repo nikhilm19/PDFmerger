@@ -37,7 +37,11 @@ class merge(Tk):
         
 
       
-        
+   
+    def xyz(self):
+        print("hi")
+        self.files=list(filedialog.askopenfilenames())    
+    
     def createWidgets(self):
         """creates Button,Label and entry field
 
@@ -62,18 +66,11 @@ class merge(Tk):
         self.save=Button(self.box,text="Save as",bg="light grey",height=2)
         self.save.pack(fill="x",expand=True)
         #self.save.grid(row=0,column=0,columnspan=2,rowspan=3,sticky="ew")
-        self.select=Button(self.box,text="Select Files",bg="light blue",height=2,width=25,font=("Arial",12),command=selectFiles)
+        self.select=Button(self.box,text="Select Files",bg="light blue",height=2,width=25,command=self.xyz,font=("Arial",12))
         self.select.pack(fill="both")#self.select.grid(row=4,column=0,columnspan=2)
-        
-
-
-       
-        
         self.developer=Label(self.footer,text="Developed by Nikhil Mulchandani    M:8758583958",fg="blue",height=2,width=52,bg="white")
         self.developer.pack(expand=True,fill="x")
-    def selectFiles(self):
-        self.files=list(filedialog.askopenfilenames())
-        
+   
         
 
 file=merge()
