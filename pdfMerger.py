@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox,filedialog
 import os,subprocess,sys
 from PyPDF2 import PdfFileMerger
 class merge(Tk):
@@ -35,8 +35,10 @@ class merge(Tk):
         
             
         merged=True
-        self.fileName=filedialog.asksaveasfilename(title="Select saveAs filename",filetypes=(("Pdf files","*.pdf"),))
+        self.fileName=filedialog.asksaveasfilename(title="Select saveAs filename",defaultextension=".pdf",filetypes=[("Pdf files(*.pdf)","*.pdf")])
         #print(self.fileName)
+        if (os.path.splitext(self.fileName))[1]!=".pdf":    
+            self.fileName+=".pdf"
         self.merger=PdfFileMerger()
         try:
             for pdf in self.files:
@@ -54,7 +56,7 @@ class merge(Tk):
                 subprocess.call(["xdg-open",self.fileName])
                 
     def selectFiles(self):
-        self.newFiles=list((filedialog.askopenfilenames(initialdir="/",title="Select Files",filetypes=(("Pdf files", "*.pdf"),))))
+        self.newFiles=list((filedialog.askopenfilenames(initialdir="/",title="Select Files",filetypes = [('Pdf files(*.pdf)','*.pdf')])))
         self.files+=self.newFiles
         if(len(self.newFiles)==len(self.files)):
             self.list.delete(0)
@@ -68,9 +70,21 @@ class merge(Tk):
         print(self.deleteList)
         self.confirm=messagebox.askyesno(title="Delete Files",message="Are you sure you want to delete the selected files?")
         if self.confirm is True :
-            for i in self.deleteList.sort(reverse=True):
+            flag=False
+            self.list.delete(0,END)
+            for i in self.deleteList:
                 print(i)
-                self.list.delete(i,i)
+                if flag is False:
+                    
+                    self.files.pop(i)
+                        
+                    flag=True
+                else:
+                    self.files.pop(i-1)
+                    
+            for i in range(len(self.files)):
+                self.list.insert(i,str(i+1)+". "+str(os.path.split(self.files[i])[1]))
+            print(self.files)
     def createWidgets(self):
         """creates Button,Label and entry field
         """
@@ -80,9 +94,8 @@ class merge(Tk):
         self.box.pack(expand=True)
         self.box.config(highlightbackground="green")
         self.grid_rowconfigure(1,weight=1)
-        self.save=Button(self.box,text="Save as",bg="light grey",height=2,command=self.saveAs)
-        self.save.pack(fill="x"
-                       )
+        self.save=Button(self.box,text="Save as",font=("Arial",12),bg="light grey",height=2,command=self.saveAs)
+        self.save.pack(fill="x")
         self.select=Button(self.box,text="Select Files",bg="light blue",height=2,width=25,command=self.selectFiles,font=("Arial",12))
         self.select.pack(fill="x")
         self.developer=Label(self.footer,text="Developed by Nikhil Mulchandani    M:8758583958 Email: nikmul19@gmail.com",fg="blue",height=2,width=52,bg="white")
@@ -92,7 +105,8 @@ class merge(Tk):
         self.list=Listbox(self.box,bg="grey",selectmode=MULTIPLE,fg="white")
         self.list.insert(0,"No files selected")
         self.list.pack(fill="both")
-        self.delete=Button(self.box,text="Delete files",bg="blue",width=30,command=self.deleteFiles)
+        self.delete=Button(self.box,text="Delete files",bg="#f0e68c",width=30,command=self.deleteFiles)
         self.delete.pack()
 file=merge()
 file.mainloop()
+
