@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from tkinter import *
 from tkinter import messagebox,filedialog
 import os,subprocess,sys
@@ -47,13 +48,23 @@ class merge(Tk):
         except AttributeError:
             merged=False
             self.err=messagebox.showerror(title="No files Selected", message="Please select PDF files")
+        except PyPDF2.utils.PdfReadError:
+            self.errr=messagebox.showerror(title="Bad PDF/PDfs",message="Some of files are corrupted")
         if merged==True:
             self.completed=messagebox.askokcancel(title="Merged",message="All files merged")
             self.open=messagebox.askyesno(title="Open Output file?",message="Do you want to open "+self.fileName+"?")
             print(self.open)
             if(self.open is True):
-                os.system("start "+self.fileName)
-                subprocess.call(["xdg-open",self.fileName])
+                platform=sys.platform
+                if(platform=="linux" or platform=="linux2"):
+                    subprocess.call(["xdg-open",self.fileName])
+                elif(platform=="win32" or platform=="cygwin"):
+                    
+                    os.system("start "+self.fileName)
+                else:
+                    os.system("open "+self.fileName)
+                
+        
                 
     def selectFiles(self):
         self.newFiles=list((filedialog.askopenfilenames(initialdir="/",title="Select Files",filetypes = [('Pdf files(*.pdf)','*.pdf')])))
@@ -109,4 +120,3 @@ class merge(Tk):
         self.delete.pack()
 file=merge()
 file.mainloop()
-
